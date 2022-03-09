@@ -1,0 +1,26 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<VBox fx:controller="com.geekbrains.client.ChatController" xmlns:fx="http://javafx.com/fxml" alignment="center">
+    <HBox fx:id="authPanel">
+        <TextField HBox.hgrow="ALWAYS" fx:id="loginField" promptText="Логин"/>
+        <PasswordField HBox.hgrow="ALWAYS" fx:id="passwordField" promptText="Пароль" onAction="#sendAuth"/>
+        <Button HBox.hgrow="ALWAYS" text="Подключиться" onAction="#sendAuth"/>
+    </HBox>
+
+    <HBox HBox.Hgrow="ALWAYS">
+        <WebView HBox.hgrow="ALWAYS" fx:id="textArea"/>
+        <VBox>
+            <ListView fx:id="clientList" minWidth="200" maxHeight="200"/>
+            <HBox fx:id="changeNickPanel">
+            <TextField HBox.hgrow="ALWAYS" fx:id="nickNameField" promptText="Ник" onAction="#changeNickName"/>
+            <Button text="Изменить" onAction="#changeNickName"/>
+            </HBox>
+        </VBox>
+    </HBox>
+
+    <HBox fx:id="messagePanel">
+        <TextField fx:id="messageField" promptText="Введите сообщение" HBox.hgrow="ALWAYS" onAction="#sendMessage"/>
+        <Button text="Отправить" onAction="#sendMessage"/>
+    </HBox>
+</VBox>
