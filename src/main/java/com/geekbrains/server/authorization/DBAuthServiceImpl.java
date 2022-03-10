@@ -49,7 +49,14 @@ public class DBAuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void changeNickName(String nickName) {
+    public synchronized void changeNickName(String nickName, String newNickName) {
 
+        try {
+            stmt.executeUpdate("UPDATE users " +
+                    "SET nickname = '" + newNickName + "' " +
+                    "WHERE nickname = '"+ nickName +"';");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

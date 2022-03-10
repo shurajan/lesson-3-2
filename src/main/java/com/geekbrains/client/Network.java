@@ -35,20 +35,27 @@ public class Network {
                             controller.displayMessage(client[1] + " покинул чат");
                         } else if (messageFromServer.startsWith(ServerCommandConstants.CLIENTS)) {
                             String[] client = messageFromServer.split(" ");
+                            //controller.removeClients();
                             for (int i = 1; i < client.length; i++) {
                                 controller.displayClient(client[i]);
+                            }
+                        } else if (messageFromServer.startsWith(ServerCommandConstants.NICKNAME)) {
+                            String[] client = messageFromServer.split(" ");
+                            if (controller.ifClientExist(client[1])) {
+                                controller.removeClient(client[1]);
+                                controller.displayClient(client[2]);
                             }
                         } else if (messageFromServer.startsWith(ServerCommandConstants.PRIVATE)) {
                             String[] message = messageFromServer.split(" ");
                             StringBuilder sb = new StringBuilder();
-                            sb.append("<b>");
                             sb.append(message[1]);
+                            sb.append("->");
+                            sb.append(message[2]);
                             sb.append(":");
-                            for (int i = 2; i < message.length; i++) {
+                            for (int i = 3; i < message.length; i++) {
                                 sb.append(" ");
                                 sb.append(message[i]);
                             }
-                            sb.append("<b>");
                             controller.displayPrivateMessage(sb.toString());
 
                         } else {
@@ -79,6 +86,14 @@ public class Network {
     public void sendMessage(String toNickName, String message) {
         try {
             outputStream.writeUTF(ServerCommandConstants.PRIVATE + " " + toNickName + " " + message);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void changeNickName(String newNickName) {
+        try {
+            outputStream.writeUTF(ServerCommandConstants.NICKNAME + " " + newNickName);
         } catch (IOException exception) {
             exception.printStackTrace();
         }

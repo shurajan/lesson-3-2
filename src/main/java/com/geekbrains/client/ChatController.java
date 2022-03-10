@@ -91,6 +91,9 @@ public class ChatController implements Initializable {
         });
     }
 
+    public boolean ifClientExist(String nickName){
+       return clientList.getItems().contains(nickName);
+    }
 
     public void sendAuth(ActionEvent event) {
         boolean authenticated = network.sendAuth(loginField.getText(), passwordField.getText());
@@ -129,5 +132,7 @@ public class ChatController implements Initializable {
     }
 
     public void changeNickName(ActionEvent actionEvent) {
+        network.changeNickName(nickNameField.getText());
+        nickNameField.clear();
     }
 }

@@ -75,12 +75,24 @@ public class ClientHandler {
             if (messageInChat.equals(ServerCommandConstants.EXIT)) {
                 closeConnection();
                 return;
+            } else if (messageInChat.startsWith(ServerCommandConstants.NICKNAME)) {
+                String[] messageInfo = messageInChat.split(" ");
+                if (messageInfo.length == 2) {
+                    if (!messageInfo[1].trim().equals("") && !server.isNickNameBusy(messageInfo[1])) {
+                        server.broadcastMessage(ServerCommandConstants.NICKNAME + " " + this.nickName
+                                + " " + messageInfo[1]);
+                        server.getAuthService().changeNickName(this.nickName, messageInfo[1]);
+                        this.nickName = messageInfo[1];
+                    }
+                }
             } else if (messageInChat.startsWith(ServerCommandConstants.PRIVATE)) {
                 String[] messageInfo = messageInChat.split(" ");
 
                 StringBuilder msg = new StringBuilder(ServerCommandConstants.PRIVATE);
                 msg.append(" ");
                 msg.append(nickName);
+                msg.append(" ");
+                msg.append(messageInfo[1]);
                 msg.append(" ");
                 for (int i = 2; i < messageInfo.length; i++) {
                     msg.append(messageInfo[i]);

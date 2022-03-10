@@ -26,7 +26,6 @@ public class InMemoryAuthServiceImpl implements AuthService {
         if (user != null && user.getPassword().equals(password)) {
             return user.getNickName();
         }
-
         return null;
     }
 
@@ -36,11 +35,9 @@ public class InMemoryAuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void changeNickName(String nickName) {
-        UserData user = users.get(login);
-        // Ищем пользователя по логину и паролю, если нашли то возвращаем никнэйм
-        if (user != null && user.getNickName().equals(nickName)) {
-            user.setNickName(nickName);
+    public void changeNickName(String nickName, String newNickName) {
+        for (Map.Entry<String, UserData> entry : users.entrySet()) {
+            if(entry.getValue().getNickName().equals(nickName)) entry.getValue().setNickName(newNickName);
         }
     }
 }

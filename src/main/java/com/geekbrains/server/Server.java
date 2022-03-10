@@ -58,8 +58,8 @@ public class Server {
         }
     }
 
-    public synchronized void privateMessage(String fromNickName, String toNickName, String message){
-        for(ClientHandler handler: connectedUsers) {
+    public synchronized void privateMessage(String fromNickName, String toNickName, String message) {
+        for (ClientHandler handler : connectedUsers) {
             if (handler.getNickName().equals(toNickName) || handler.getNickName().equals(fromNickName)) {
                 handler.sendMessage(message);
             }
