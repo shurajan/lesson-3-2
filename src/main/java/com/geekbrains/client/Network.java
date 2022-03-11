@@ -35,7 +35,7 @@ public class Network {
                             controller.displayMessage(client[1] + " покинул чат");
                         } else if (messageFromServer.startsWith(ServerCommandConstants.CLIENTS)) {
                             String[] client = messageFromServer.split(" ");
-                            //controller.removeClients();
+
                             for (int i = 1; i < client.length; i++) {
                                 controller.displayClient(client[i]);
                             }
@@ -63,7 +63,7 @@ public class Network {
                         }
                     }
                 } catch (IOException exception) {
-                    exception.printStackTrace();
+                    System.out.println(exception.toString());;
                 }
             }
         }).start();

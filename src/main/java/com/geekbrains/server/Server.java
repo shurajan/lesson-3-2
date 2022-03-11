@@ -3,7 +3,6 @@ package com.geekbrains.server;
 import com.geekbrains.CommonConstants;
 import com.geekbrains.server.authorization.AuthService;
 import com.geekbrains.server.authorization.DBAuthServiceImpl;
-import com.geekbrains.server.authorization.InMemoryAuthServiceImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -48,7 +47,6 @@ public class Server {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -65,7 +63,6 @@ public class Server {
             }
         }
     }
-
 
     public synchronized void addConnectedUser(ClientHandler handler) {
         connectedUsers.add(handler);

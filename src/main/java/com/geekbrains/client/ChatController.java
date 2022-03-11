@@ -82,6 +82,7 @@ public class ChatController implements Initializable {
         });
     }
 
+
     public void removeClient(String nickName) {
         Platform.runLater(new Runnable() {
             @Override
@@ -91,8 +92,8 @@ public class ChatController implements Initializable {
         });
     }
 
-    public boolean ifClientExist(String nickName){
-       return clientList.getItems().contains(nickName);
+    public boolean ifClientExist(String nickName) {
+        return clientList.getItems().contains(nickName);
     }
 
     public void sendAuth(ActionEvent event) {

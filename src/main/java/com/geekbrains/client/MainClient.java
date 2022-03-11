@@ -12,7 +12,6 @@ import javafx.stage.WindowEvent;
 public class MainClient extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
         Parent root = loader.load();
         stage.setTitle("Чат");

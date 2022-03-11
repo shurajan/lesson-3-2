@@ -37,7 +37,7 @@ public class InMemoryAuthServiceImpl implements AuthService {
     @Override
     public void changeNickName(String nickName, String newNickName) {
         for (Map.Entry<String, UserData> entry : users.entrySet()) {
-            if(entry.getValue().getNickName().equals(nickName)) entry.getValue().setNickName(newNickName);
+            if (entry.getValue().getNickName().equals(nickName)) entry.getValue().setNickName(newNickName);
         }
     }
 }

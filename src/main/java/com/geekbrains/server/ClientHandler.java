@@ -78,6 +78,7 @@ public class ClientHandler {
             } else if (messageInChat.startsWith(ServerCommandConstants.NICKNAME)) {
                 String[] messageInfo = messageInChat.split(" ");
                 if (messageInfo.length == 2) {
+                    //Проверяем, что nick не пустой
                     if (!messageInfo[1].trim().equals("") && !server.isNickNameBusy(messageInfo[1])) {
                         server.broadcastMessage(ServerCommandConstants.NICKNAME + " " + this.nickName
                                 + " " + messageInfo[1]);
