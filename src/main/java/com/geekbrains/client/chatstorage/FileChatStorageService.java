@@ -2,8 +2,7 @@ package com.geekbrains.client.chatstorage;
 
 import com.geekbrains.CommonConstants;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -33,11 +32,12 @@ public class FileChatStorageService implements ChatStorageService {
         for (String message : messages) {
             System.out.println(message);
             msgs.append(message);
-            msgs.append("/n");
+            if (messages.size() > 1) msgs.append(System.lineSeparator());
         }
 
         byte[] outData = msgs.toString().getBytes();
-        try (FileOutputStream out = new FileOutputStream("history/history_" + login + ".txt")) {
+        try (BufferedOutputStream out = new BufferedOutputStream(
+                new FileOutputStream("history/history_" + login + ".txt"))) {
             out.write(outData);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,6 +46,21 @@ public class FileChatStorageService implements ChatStorageService {
 
     @Override
     public void load() {
+        try (BufferedReader br = new BufferedReader(new FileReader("history/history_" + login + ".txt"))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
 
+            while (line != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+                line = br.readLine();
+                messages.add(line);
+            }
+            String everything = sb.toString();
+        } catch (FileNotFoundException e) {
+            System.out.println("Нет истории");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

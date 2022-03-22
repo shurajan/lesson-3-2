@@ -108,6 +108,8 @@ public class ChatController implements Initializable {
         boolean authenticated = network.sendAuth(loginField.getText(), passwordField.getText());
         if (authenticated) {
             this.storageService = new FileChatStorageService(loginField.getText());
+            this.storageService.load();
+
             loginField.clear();
             passwordField.clear();
             setAuthenticated(true);
