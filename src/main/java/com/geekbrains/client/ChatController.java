@@ -1,5 +1,7 @@
 package com.geekbrains.client;
 
+import com.geekbrains.client.chatstorage.ChatStorageService;
+import com.geekbrains.client.chatstorage.FileChatStorageService;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +20,7 @@ import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
     private final Network network;
+    private ChatStorageService storageService;
     private String content;
     @FXML
     private WebView textArea;
@@ -29,6 +32,7 @@ public class ChatController implements Initializable {
     private PasswordField passwordField;
     @FXML
     private ListView<String> clientList;
+
 
 
     public ChatController() {
@@ -56,7 +60,9 @@ public class ChatController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                content = content + "<p style=\"color:blue;\">" + text + "</p>";
+                String formattedMessage = "<p style=\"color:blue;\">" + text + "</p>";
+                storageService.append(formattedMessage);
+                content+= formattedMessage;
                 textArea.getEngine().loadContent(content, "text/html");
             }
         });
@@ -66,7 +72,9 @@ public class ChatController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                content = content + "<p style=\"color:red;\">" + text + "</p>";
+                String formattedMessage = "<p style=\"color:red;\">" + text + "</p>";
+                storageService.append(formattedMessage);
+                content+= formattedMessage;
                 textArea.getEngine().loadContent(content, "text/html");
             }
         });
@@ -99,9 +107,12 @@ public class ChatController implements Initializable {
     public void sendAuth(ActionEvent event) {
         boolean authenticated = network.sendAuth(loginField.getText(), passwordField.getText());
         if (authenticated) {
+            this.storageService = new FileChatStorageService(loginField.getText());
             loginField.clear();
             passwordField.clear();
             setAuthenticated(true);
+
+
             clientList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             clientList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
                 @Override
@@ -129,6 +140,7 @@ public class ChatController implements Initializable {
     }
 
     public void close() {
+        storageService.save();
         network.closeConnection();
     }
 
