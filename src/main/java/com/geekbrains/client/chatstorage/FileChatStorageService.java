@@ -45,22 +45,22 @@ public class FileChatStorageService implements ChatStorageService {
     }
 
     @Override
-    public void load() {
+    public String load() {
+        StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader("history/history_" + login + ".txt"))) {
-            StringBuilder sb = new StringBuilder();
+
             String line = br.readLine();
 
             while (line != null) {
+                append(line);
                 sb.append(line);
-                sb.append(System.lineSeparator());
                 line = br.readLine();
-                messages.add(line);
             }
-            String everything = sb.toString();
         } catch (FileNotFoundException e) {
             System.out.println("Нет истории");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return sb.toString();
     }
 }

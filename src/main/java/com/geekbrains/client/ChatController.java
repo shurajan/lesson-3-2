@@ -34,7 +34,6 @@ public class ChatController implements Initializable {
     private ListView<String> clientList;
 
 
-
     public ChatController() {
         this.content = "";
         this.network = new Network(this);
@@ -62,7 +61,7 @@ public class ChatController implements Initializable {
             public void run() {
                 String formattedMessage = "<p style=\"color:blue;\">" + text + "</p>";
                 storageService.append(formattedMessage);
-                content+= formattedMessage;
+                content += formattedMessage;
                 textArea.getEngine().loadContent(content, "text/html");
             }
         });
@@ -74,7 +73,7 @@ public class ChatController implements Initializable {
             public void run() {
                 String formattedMessage = "<p style=\"color:red;\">" + text + "</p>";
                 storageService.append(formattedMessage);
-                content+= formattedMessage;
+                content += formattedMessage;
                 textArea.getEngine().loadContent(content, "text/html");
             }
         });
@@ -108,12 +107,12 @@ public class ChatController implements Initializable {
         boolean authenticated = network.sendAuth(loginField.getText(), passwordField.getText());
         if (authenticated) {
             this.storageService = new FileChatStorageService(loginField.getText());
-            this.storageService.load();
+            content = this.storageService.load();
+            textArea.getEngine().loadContent(content, "text/html");
 
             loginField.clear();
             passwordField.clear();
             setAuthenticated(true);
-
 
             clientList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             clientList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {

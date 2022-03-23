@@ -5,5 +5,5 @@ public interface ChatStorageService {
 
     void save();
 
-    void load();
+    String load();
 }
