@@ -1,0 +1,2 @@
+<p style="color:blue;">fourth_user: test6</p>
+<p style="color:blue;">first_user покинул чат</p>
