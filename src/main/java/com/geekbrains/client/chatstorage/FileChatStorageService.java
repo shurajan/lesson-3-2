@@ -26,9 +26,7 @@ public class FileChatStorageService implements ChatStorageService {
 
     @Override
     public void save() {
-
         StringBuilder msgs = new StringBuilder();
-
         for (String message : messages) {
             System.out.println(message);
             msgs.append(message);

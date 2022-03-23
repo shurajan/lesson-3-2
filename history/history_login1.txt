@@ -9,3 +9,5 @@
 <p style="color:blue;">second_user покинул чат</p>
 <p style="color:blue;">second_user: test23131</p>
 <p style="color:blue;">second_user покинул чат</p>
+<p style="color:blue;">first_user: qqqqq</p>
+<p style="color:blue;">first_user: zzzz</p>
