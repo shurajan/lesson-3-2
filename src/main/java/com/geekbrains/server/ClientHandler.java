@@ -19,17 +19,9 @@ public class ClientHandler {
             this.socket = socket;
             this.inputStream = new DataInputStream(socket.getInputStream());
             this.outputStream = new DataOutputStream(socket.getOutputStream());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        authentication();
-                        readMessages();
-                    } catch (IOException exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }).start();
+            authentication();
+            readMessages();
+
         } catch (IOException exception) {
             throw new RuntimeException("Проблемы при создании обработчика");
         }
