@@ -1,5 +1,8 @@
 package com.geekbrains.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,6 +13,7 @@ public class ClientHandler {
     private final Socket socket;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
+    private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
 
     private String nickName;
 
@@ -45,12 +49,15 @@ public class ClientHandler {
                         server.broadcastMessage(ServerCommandConstants.ENTER + " " + nickName);
                         sendMessage(server.getClients());
                         server.addConnectedUser(this);
+                        LOGGER.info("Клиент с ником " + nickName + " подключился");
                         return;
                     } else {
                         sendAuthenticationMessage(false);
+                        LOGGER.warn("Попытка второго подключения клиента с ником " + nickName);
                     }
                 } else {
                     sendAuthenticationMessage(false);
+                    LOGGER.warn("Пустой nickname");
                 }
             }
         }
@@ -63,9 +70,9 @@ public class ClientHandler {
     private void readMessages() throws IOException {
         while (true) {
             String messageInChat = inputStream.readUTF();
-            System.out.println("от " + nickName + ": " + messageInChat);
             if (messageInChat.equals(ServerCommandConstants.EXIT)) {
                 closeConnection();
+                LOGGER.info(this.nickName + " клиент отключился");
                 return;
             } else if (messageInChat.startsWith(ServerCommandConstants.NICKNAME)) {
                 String[] messageInfo = messageInChat.split(" ");
@@ -75,6 +82,7 @@ public class ClientHandler {
                         server.broadcastMessage(ServerCommandConstants.NICKNAME + " " + this.nickName
                                 + " " + messageInfo[1]);
                         server.getAuthService().changeNickName(this.nickName, messageInfo[1]);
+                        LOGGER.info("Клиент изменил nickname : " + this.nickName + "->" + messageInfo[1]);
                         this.nickName = messageInfo[1];
                     }
                 }
@@ -91,9 +99,11 @@ public class ClientHandler {
                     msg.append(messageInfo[i]);
                     msg.append(" ");
                 }
+                LOGGER.info("Клиент " + this.nickName + " отправил частное сообщение клиенту " + messageInfo[1]);
                 server.privateMessage(nickName, messageInfo[1], msg.toString());
 
             } else {
+                LOGGER.info("Клиент " + this.nickName + " отправил сообщение " + messageInChat);
                 server.broadcastMessage(nickName + ": " + messageInChat);
             }
         }
@@ -103,6 +113,7 @@ public class ClientHandler {
         try {
             outputStream.writeUTF(message);
         } catch (IOException exception) {
+            LOGGER.error(exception.getMessage());
             exception.printStackTrace();
         }
     }
@@ -115,6 +126,7 @@ public class ClientHandler {
             inputStream.close();
             socket.close();
         } catch (IOException exception) {
+            LOGGER.error(exception.getMessage());
             exception.printStackTrace();
         }
     }

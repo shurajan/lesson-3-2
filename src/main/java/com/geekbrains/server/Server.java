@@ -4,6 +4,9 @@ import com.geekbrains.CommonConstants;
 import com.geekbrains.server.authorization.AuthService;
 import com.geekbrains.server.authorization.DBAuthServiceImpl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,6 +17,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private final AuthService authService;
+    private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     private List<ClientHandler> connectedUsers;
 
@@ -27,18 +31,18 @@ public class Server {
             connectedUsers = new ArrayList<>();
 
             while (true) {
-                System.out.println("Сервер ожидает подключения");
+                LOGGER.info("Сервер ожидает подключения");
                 Socket socket = server.accept();
-                System.out.println("Клиент подключился");
                 executorService.execute(() -> {
                     new ClientHandler(this, socket);
                 });
 
             }
         } catch (IOException exception) {
-            System.out.println("Ошибка в работе сервера");
-            exception.printStackTrace();
+            LOGGER.error("Ошибка в работе сервера");
+            LOGGER.error(exception.getMessage());
         } finally {
+            LOGGER.info("Cервер завершает работу");
             executorService.shutdown();
             if (authService != null) {
                 authService.end();

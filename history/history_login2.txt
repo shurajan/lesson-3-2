@@ -5,3 +5,9 @@
 <p style="color:blue;">fourth_user: tut</p>
 <p style="color:blue;">fourth_user покинул чат</p>
 <p style="color:blue;">third_user покинул чат</p>
+<p style="color:blue;">third_user покинул чат</p>
+<p style="color:blue;">second_user: gfgfd</p>
+<p style="color:red;">third_user->second_user: terter</p>
+<p style="color:blue;">fourth_user: geferfd</p>
+<p style="color:blue;">fourth_user покинул чат</p>
+<p style="color:blue;">third_user покинул чат</p>
