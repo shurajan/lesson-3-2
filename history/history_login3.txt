@@ -1,0 +1,11 @@
+<p style="color:red;">third_user->second_user: 4</p>
+<p style="color:blue;">third_user: all</p>
+<p style="color:red;">third_user->first_user: 3erw</p>
+<p style="color:blue;">third_user: all2</p>
+<p style="color:blue;">fourth_user: tut</p>
+<p style="color:blue;">fourth_user покинул чат</p>
+<p style="color:red;">third_user->second_user: terter</p>
+<p style="color:blue;">second_user покинул чат</p>
+<p style="color:red;">fourth_user->third_user: t4rr</p>
+<p style="color:blue;">fourth_user: geferfd</p>
+<p style="color:blue;">fourth_user покинул чат</p>
