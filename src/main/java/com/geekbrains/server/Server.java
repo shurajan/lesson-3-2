@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private final AuthService authService;
@@ -18,19 +20,26 @@ public class Server {
     public Server() {
         //authService = new InMemoryAuthServiceImpl();
         authService = new DBAuthServiceImpl();
+        ExecutorService executorService = Executors.newFixedThreadPool(CommonConstants.MAX_NUMBER_CLIENTS);
+
         try (ServerSocket server = new ServerSocket(CommonConstants.SERVER_PORT)) {
             authService.start();
             connectedUsers = new ArrayList<>();
+
             while (true) {
                 System.out.println("Сервер ожидает подключения");
                 Socket socket = server.accept();
                 System.out.println("Клиент подключился");
-                new ClientHandler(this, socket);
+                executorService.execute(() -> {
+                    new ClientHandler(this, socket);
+                });
+
             }
         } catch (IOException exception) {
             System.out.println("Ошибка в работе сервера");
             exception.printStackTrace();
         } finally {
+            executorService.shutdown();
             if (authService != null) {
                 authService.end();
             }
